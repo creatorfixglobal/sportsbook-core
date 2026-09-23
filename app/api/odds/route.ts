@@ -1,0 +1,2 @@
+import { NextResponse } from "next/server";import { createClient } from "@/lib/supabase/server";
+export async function GET(req:Request){const id=new URL(req.url).searchParams.get("selection");if(!id)return NextResponse.json({error:"selection is required"},{status:400});const s=await createClient();const {data,error}=await s.schema("sportsbook").rpc("get_current_quote",{p_selection_id:id});if(error)return NextResponse.json({error:error.message},{status:500});return NextResponse.json({quote:data?.[0]??null});}
