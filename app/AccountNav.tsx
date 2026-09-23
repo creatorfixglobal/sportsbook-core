@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-export function AccountNav() {
+export function AccountNav({compact=false}:{compact?:boolean}) {
   const [email, setEmail] = useState<string | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
   const [ready, setReady] = useState(false);
@@ -10,7 +10,6 @@ export function AccountNav() {
   useEffect(() => {
     const supabase = createClient();
     let active = true;
-
     const load = async () => {
       const { data } = await supabase.auth.getUser();
       if (!active) return;
@@ -22,27 +21,20 @@ export function AccountNav() {
           const j = await r.json();
           if (active) setBalance(Number(j.balance_minor ?? 0));
         }
-      } else {
-        setBalance(null);
-      }
+      } else setBalance(null);
       setReady(true);
     };
-
     void load();
     const { data: listener } = supabase.auth.onAuthStateChange((event) => {
       if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "SIGNED_OUT") void load();
     });
-
     const timer = window.setInterval(() => void load(), 15000);
-    return () => {
-      active = false;
-      window.clearInterval(timer);
-      listener.subscription.unsubscribe();
-    };
+    return () => { active=false; window.clearInterval(timer); listener.subscription.unsubscribe(); };
   }, []);
 
   if (!ready) return <div className="h-9 w-24 animate-pulse rounded-xl bg-white/10" />;
   if (!email) return <a href="/login" className="primary">Sign in</a>;
+  if (compact) return <a href="/wallet" className="balance-pill"><span>Balance</span><b>{balance === null ? "…" : balance.toLocaleString()}</b></a>;
 
   return <div className="flex items-center gap-2">
     <a href="/wallet" className="rounded-xl border border-white/10 px-3 py-2 text-sm">Balance {balance === null ? "…" : balance.toLocaleString()}</a>
