@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-export const metadata: Metadata={title:"Sportsbook Core",description:"Sports-only sportsbook platform foundation"};
-export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><body>{children}</body></html>}
+import { BottomNav } from "./BottomNav";
+export const metadata: Metadata={title:"Sportsbook Core",description:"Sports market learning and demonstration platform"};
+export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><body>{children}<BottomNav/></body></html>}
