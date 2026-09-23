@@ -1,0 +1,8 @@
+"use client";
+import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+export default function Login(){
+ const [email,setEmail]=useState(""); const [password,setPassword]=useState(""); const [mode,setMode]=useState<"login"|"signup">("login"); const [msg,setMsg]=useState("");
+ async function submit(e:React.FormEvent){e.preventDefault();setMsg("Processing...");const s=createClient();const r=mode==="login"?await s.auth.signInWithPassword({email,password}):await s.auth.signUp({email,password});setMsg(r.error?.message??(mode==="signup"?"Account created. Check email if confirmation is enabled.":"Signed in."));if(!r.error) location.href="/";}
+ return <main className="min-h-screen grid place-items-center p-5"><form onSubmit={submit} className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 p-7"><h1 className="text-2xl font-bold">Account</h1><p className="mt-2 text-sm text-slate-400">Secure sportsbook account access.</p><input className="field mt-6" placeholder="Email" type="email" value={email} onChange={e=>setEmail(e.target.value)} required/><input className="field mt-3" placeholder="Password" type="password" value={password} onChange={e=>setPassword(e.target.value)} required minLength={6}/><button className="primary mt-4 w-full">{mode==="login"?"Sign in":"Create account"}</button><button type="button" onClick={()=>setMode(mode==="login"?"signup":"login")} className="mt-4 w-full text-sm text-slate-300">{mode==="login"?"Create a new account":"Back to sign in"}</button>{msg&&<p className="mt-4 text-sm text-slate-300">{msg}</p>}</form></main>
+}
