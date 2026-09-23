@@ -1,0 +1,1 @@
+import type { SportsProvider,ProviderEvent,ProviderMarket } from "./types";export const internalProvider:SportsProvider={name:"internal",async listEvents():Promise<ProviderEvent[]>{return []},async getMarkets(_id):Promise<ProviderMarket[]>{return []},async syncResults(){return {status:"ready"}},async verifyWebhook(){return false}};
