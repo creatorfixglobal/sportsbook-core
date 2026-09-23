@@ -24,7 +24,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
     try {
       const r = await fetch(`https://v3.football.api-sports.io/fixtures?id=${encodeURIComponent(event.provider_event_id)}`, {
         headers: { "x-apisports-key": apiKey },
-        cache: "no-store"
+        next: { revalidate: 15 }
       });
       if (r.ok) {
         const j = await r.json();
@@ -44,6 +44,6 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
   }
 
   return NextResponse.json({ event: { id: event.id, name: event.name }, live }, {
-    headers: { "Cache-Control": "no-store" }
+    headers: { "Cache-Control": "s-maxage=10, stale-while-revalidate=20" }
   });
 }
