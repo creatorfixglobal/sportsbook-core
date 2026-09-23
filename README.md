@@ -25,3 +25,6 @@ The free-plan setup uses the existing CreatorFix Global Supabase project with a 
 
 ## Production readiness
 Live wagering requires the operator to complete all applicable licensing, age verification, KYC/AML, payment, responsible-gambling, tax, privacy, security, geolocation and jurisdiction controls before enabling real-money operation. The application architecture keeps those provider/compliance integrations behind server-side boundaries.
+
+## User flow
+Home → Sport → Event → Match Live / Markets → Bet Slip → Account / Wallet → My Bets.
