@@ -1,5 +1,5 @@
-import { AccountNav } from "@/app/AccountNav";
 "use client";
+import { AccountNav } from "@/app/AccountNav";
 import { useEffect,useMemo,useState } from "react";
 type Selection={id:string;name:string;status:string;odds_quotes:{decimal_odds:number;expires_at:string|null}[]};
 type Event={id:string;name:string;starts_at:string;status:string;is_live:boolean;competitions:{name:string;sports:{name:string}};markets:{id:string;name:string;status:string;selections:Selection[]}[]};
