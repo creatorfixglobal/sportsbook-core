@@ -13,7 +13,7 @@ export default async function SportPage({params}:{params:Promise<{sport:string}>
   const {data:sportRow}=await s.schema("sportsbook").from("sports").select("id,name,slug").eq("slug",sport).maybeSingle();
   let events:any[]=[];
   if(sportRow){
-    const r=await s.schema("sportsbook").from("events").select("id,name,starts_at,status,is_live,competitions(name),markets(id,name,status,selections(id,name,status,odds_quotes(decimal_odds,expires_at,captured_at)))").eq("sport_id",sportRow.id).in("status",["scheduled","live"]).order("starts_at");
+    const r=await s.schema("sportsbook").from("events").select("id,name,starts_at,status,is_live,competitions(name),markets(id,name,status,selections(id,name,status,odds_quotes(decimal_odds,expires_at,captured_at)))").eq("competitions.sport_id",sportRow.id).in("status",["scheduled","live"]).order("starts_at");
     events=r.data??[];
   }
 
